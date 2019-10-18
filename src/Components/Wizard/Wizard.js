@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { Link } from "react-router-dom";
+import axios from 'axios';
 
 class Wizard extends Component {
     constuctor(){
@@ -15,13 +17,42 @@ class Wizard extends Component {
             rent: ''
         };
     }
-
+   
     handleInput = (e) => {
         let {name, value} = e.target;
         this.setState({
             [name]: value
         });
     }
+    
+    handleAddButton = () => {
+        const { property_name, address, city, state, zip, image_url, morgage, rent } = this.state
+        axios.post("/api/add", { property_name, address, city, state, zip, image_url, morgage, rent}).then(res => {
+        })
+        this.setState({
+          property_name: "",
+          address: "",
+          city: "",
+          state: "",
+          zip: "",
+          image_url: "",
+          morgage: "",
+          rent: ""
+        })
+    
+      }
+
+    handleNext = () => {
+        const { property_name, address, city, state, zip } = this.state
+        this.setState({
+          property_name: property_name,
+          address: address,
+          city: city,
+          state: state,
+          zip: zip
+        })
+      }
+
 
     render(){
         return(
@@ -35,7 +66,7 @@ class Wizard extends Component {
                 name = 'property_name'
                 value = {property_name}
                 onChange={e => this.handleInput(e)}
-                placeholder='Address'
+                placeholder='name'
                 />
 
                 <input 
@@ -65,6 +96,12 @@ class Wizard extends Component {
                 onChange={e => this.handleInput(e)}
                 placeholder='Zip'
                 />
+                <Link to ={{pathname: '/'}}>
+                    <button onClick={this.handleAddButton}>Add</button>
+                </Link>
+                <Link to = {{pathname: '/step2'}}>
+                    <button handleNext = {this.handleNext}>Next</button>
+                </Link>
             </div>
         )
     }

@@ -8,6 +8,10 @@ app.use(express.json())
 
 const {SERVER_PORT, CONNECTION_STRING} = process.env
 
+app.get('/api/houses', ctrl.getHouses)
+app.post('/api/add', ctrl.addHouse)
+app.delete('/api/delete/:id', ctrl.deleteHouse)
+
 massive(CONNECTION_STRING)
     .then(db => {
         app.set('db', db)
